@@ -6,7 +6,12 @@ const bodyParser = require('body-parser');
 // Evironnement variable or you can say constante
 env.config();
 
-// app.use(bodyParser());
+// parse application/x-www-form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
 
 app.get('/', (req, res, next) => {
     res.status(200).json({
