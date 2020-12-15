@@ -7,17 +7,17 @@ const mongoose = require('mongoose');
 // Evironnement variable or you can say constante
 env.config();
 
-// parse application/x-www-form-urlencoded
-// app.use(bodyParser.urlencoded({ extended: false }))
-
 //MongoDB connexion
-// mongodb+srv:root:<password>@cluster0.t2zq5.mongodb.net/<dbname>?retryWrites=true&w=majority
+// mongodb+srv//root:<password>@cluster0.t2zq5.mongodb.net/<dbname>?retryWrites=true&w=majority
 mongoose.connect(
-    'mongodb://localhost:27017/myapp', 
+`mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.t2zq5.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority`,    
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    });
+    }
+).then(() => {
+    console.log('Database connected');
+});
 
 // parse application/json
 app.use(bodyParser.json())
