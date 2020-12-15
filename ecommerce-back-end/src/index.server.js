@@ -4,6 +4,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+//routes
+const  userRoutes = require('./routes/user')
+
 // Evironnement variable or you can say constante
 env.config();
 
@@ -13,7 +16,9 @@ mongoose.connect(
 `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.t2zq5.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority`,    
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useCreateIndex:true // pour éviter l'erreur Deprecation warning: collection.ensurIndex is depracated. Use createIdexes instead.
+
     }
 ).then(() => {
     console.log('Database connected');
@@ -21,21 +26,7 @@ mongoose.connect(
 
 // parse application/json
 app.use(bodyParser.json())
-
-
-app.get('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'Hello frorm Server'
-    }).then(() => {
-        console.log('Database connected');
-    });
-});
-
-app.post('/data', (req, res, next) => {
-    res.status(200).json({
-        message: req.body
-    });
-});
+app.use('/api',userRoutes)
 
 app.listen(process.env.PORT, () => {
     console.log(`server is runnig on port ${process.env.PORT}`);
